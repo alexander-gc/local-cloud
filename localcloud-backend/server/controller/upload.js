@@ -5,9 +5,26 @@ const postUpload = async (req, res) => {
 
     try {
 
-        res.status(200).send('Upload get');
+        if (!req.files) return res.status(404).send({ success: false, msg: 'Files not found' });
+
+        const { absolutePath, shortPath } = processPath(req.params.path);
+
+        let files = req.files.file;
+
+        if (!Array.isArray(files)) files = [files];
+
+        for (const file of files) await moveFile(file, absolutePath);
+
+        res.status(201).send({
+
+            success: true,
+            msg: 'Files successfully uploaded',
+            path: shortPath
+
+        });
+
     } catch (error) {
-        res.status(404).send(error.message);
+        return res.status(404).send(error.message);
     }
 
 }

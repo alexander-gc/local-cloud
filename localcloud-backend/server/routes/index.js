@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+const fileUpload = require('express-fileupload');
 
 const { content, upload } = require('../controller/index');
 
@@ -15,6 +16,6 @@ router.
 
 router.
     route('/upload/:path?')
-    .post(upload.postUpload);
+    .post(fileUpload(), upload.postUpload);
 
 module.exports = router;
