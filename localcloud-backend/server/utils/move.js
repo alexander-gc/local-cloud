@@ -11,7 +11,7 @@ const moveFile = async (file, pathCloud) => {
 
     } else {
 
-        await file.mv(filePath, (e) => { if (e) throw new Error(e) });
+        await file.mv(filePath, (error) => { if (error) throw new Error(error) });
 
     }
 

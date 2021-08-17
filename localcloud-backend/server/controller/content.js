@@ -5,10 +5,12 @@ const getContent = async (req, res) => {
 
     try {
 
-        const { shortPath, absolutePath } = processPath(req.params.path);
+        const { params } = req;
+
+        const { shortPath, absolutePath } = processPath(params.path);
 
         const dirExists = fs.existsSync(absolutePath);
-        if (!dirExists) return res.status(404).send('Dir o file not found!');
+        if (!dirExists) return res.status(400).send('Dir o file not found!');
 
         const dir = fs.opendirSync(absolutePath);
 

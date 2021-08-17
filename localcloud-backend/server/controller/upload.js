@@ -5,11 +5,14 @@ const postUpload = async (req, res) => {
 
     try {
 
-        if (!req.files) return res.status(404).send({ success: false, msg: 'Files not found' });
+        const { params } = req;
 
-        const { absolutePath, shortPath } = processPath(req.params.path);
+
+        const { absolutePath, shortPath } = processPath(params.path);
 
         let files = req.files.file;
+
+        if (!files) return res.status(400).send({ success: false, msg: 'Files not found' });
 
         if (!Array.isArray(files)) files = [files];
 
