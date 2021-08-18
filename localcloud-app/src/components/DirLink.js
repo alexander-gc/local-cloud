@@ -2,16 +2,19 @@ import { Link } from 'react-router-dom';
 
 export const DirLink = ({ isDirectory, parentDirectory, pathUrl, name, children }) => {
 
+
     if (!isDirectory) {
         return <>{children}</>;
     }
 
-    let link = `/content/${name}`;
-    if (pathUrl) {
-        link = `${pathUrl}-${name}`;
-    }
+    let link;
+
+    pathUrl
+        ? link = `${pathUrl}-${name}`
+        : link = `/content/${name}`;
+
     if (parentDirectory) {
-        link = link.split('-').slice(0, -1).join('-') || '/content/';
+        link = link.split('-').slice(0, -2).join('-') || '/content/';
     }
 
     return (

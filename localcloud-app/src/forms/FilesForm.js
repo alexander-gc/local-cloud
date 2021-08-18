@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Loading } from '../components/Loading'
-import { apiFetch } from '../helpers/apiFetch'
+//import { apiFetch } from '../helpers/apiFetch'
 import api from '../helpers/api'
-import { Alert } from '../components/Alert'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { DirContext } from '../context/DirContext'
 
 export const FilesForm = ({ uploadTo, reload }) => {
 
@@ -16,25 +16,10 @@ export const FilesForm = ({ uploadTo, reload }) => {
     const [alert, setAlert] = useState();
 
     const onChange = (e) => {
-
         setFiles(e.target.files);
-
-        /*   if (e.target.files) {
-              setFiles(e.target.files);
-          } */
-
     };
 
-    const openAlert = (alertusd) => {
-        console.log(alertusd);
-        if (showAlert) {
-            return (
-                <Alert
-                    alert={alertusd}
-                    onClose={() => setShowAlert(false)} />
-            )
-        }
-    }
+    const { openAlert } = useContext(DirContext);
 
     const onSubmit = (e) => {
 
@@ -56,15 +41,12 @@ export const FilesForm = ({ uploadTo, reload }) => {
 
         api.uploadFiles(uploadTo, data).then((response) => {
             setAlert(response)
-            console.log(alert);
         });
 
         reload();
 
         setUploading(false)
         setShowAlert(true);
-
-        console.log(uploading);
 
     }
 
@@ -76,7 +58,7 @@ export const FilesForm = ({ uploadTo, reload }) => {
                 : <></>
             }
 
-            {alert && openAlert(alert)}
+            {alert && openAlert(showAlert, setShowAlert, alert)}
 
             <Form className="mb-3" onSubmit={(e) => onSubmit(e)}>
 

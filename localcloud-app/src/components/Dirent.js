@@ -14,15 +14,15 @@ export const Dirent = ({ name, isDirectory, parentDirectory, pathUrl }) => {
         <Col lg={4} xl={3} className="mt-2">
 
             <DirLink
-                {...isDirectory}
-                {...parentDirectory}
+                isDirectory={isDirectory}
+                parentDirectory={parentDirectory}
                 pathUrl={pathUrl}
                 name={name}
             >
 
                 <DirCard
-                    {...isDirectory}
-                    {...parentDirectory}
+                    isDirectory={isDirectory}
+                    parentDirectory={parentDirectory}
                     pathUrl={pathUrl}
                     name={name}
                 />

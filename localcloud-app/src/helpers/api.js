@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+//'http://localhost:5000'
+
 class Api {
     constructor() {
         this.api = axios.create({
-            baseURL: 'http://localhost:5000'
+            baseURL: 'http://192.168.1.69:5000'
         });
     }
 

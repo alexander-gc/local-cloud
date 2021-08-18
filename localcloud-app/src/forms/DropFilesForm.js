@@ -1,21 +1,20 @@
 import React, { useState } from 'react'
-//import Jumbotron from 'react-bootstrap';
 import { Alert } from '../components/Alert';
-import { apiFetch } from '../helpers/apiFetch';
-import Jumbotron, { Card } from 'react-bootstrap';
+//import { apiFetch } from '../helpers/apiFetch';
+import { Card } from 'react-bootstrap';
 import api from '../helpers/api';
 
 export const DropFilesForm = ({ reload, uploadTo }) => {
 
     const [uploading, setUploading] = useState(false)
     const [showAlert, setShowAlert] = useState(false)
-    const [alert, setAlert] = useState({});
+    const [alert, setAlert] = useState();
 
-    const openAlert = (alert) => {
+    const openAlert = (alertusd) => {
         if (showAlert) {
             return (
                 <Alert
-                    alert={alert}
+                    alert={alertusd}
                     onClose={() => setShowAlert(false)}
                 />
             );
@@ -28,6 +27,7 @@ export const DropFilesForm = ({ reload, uploadTo }) => {
         console.log(e);
 
         if (!e.dataTransfer.files.length || uploading) {
+            console.log("asddddD");
             return
         };
 
@@ -38,8 +38,7 @@ export const DropFilesForm = ({ reload, uploadTo }) => {
             data.append('file', e.dataTransfer.files[i]);
         }
 
-        //response = await api.uploadFiles(uploadTo || '', data);
-        //response = await apiFetch(uploadTo || '', data, 'POST');
+        if (uploadTo === undefined || uploadTo === 'undefined') uploadTo = "";
 
         api.uploadFiles(uploadTo, data).then((response) => {
             console.log(response);
@@ -61,6 +60,7 @@ export const DropFilesForm = ({ reload, uploadTo }) => {
     return (
         <>
             {openAlert(alert)}
+
             <Card style={{ border: '2px dashed #aaa' }} className="m-0 p-0">
                 <p
                     onDrop={(e) => onSubmit(e)}

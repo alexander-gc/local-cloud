@@ -7,7 +7,7 @@ import { DropFilesForm } from '../forms/DropFilesForm';
 import { FilesForm } from '../forms/FilesForm';
 import { MkDirForm } from '../forms/MkDirForm';
 import { PathForm } from '../forms/PathForm';
-import { apiFetch } from '../helpers/apiFetch';
+//import { apiFetch } from '../helpers/apiFetch';
 import { Dirent } from './Dirent';
 import { FormModal } from './FormModal';
 import { Loading } from './Loading';
@@ -56,9 +56,12 @@ export const Dir = (props) => {
 
     const fillEntries = () => {
 
-        if (loading) {
-            return <Loading text="Loading..." />;
-        }
+
+        /*        if (loading) {
+                   (<Loading text="Loading..." />)
+               } */
+
+        loading && <Loading text="Loading..." />
 
         let content;
 
@@ -72,15 +75,15 @@ export const Dir = (props) => {
             }
         }
 
-        /*    const directories = [
-               < Dirent
-                   name='Up a dir...'
-                   key='parent'
-                   isDirectory
-                   parentDirectory
-                   pathUrl={url}
-               />
-           ]; */
+        const directories = [
+            < Dirent
+                name='Up a dir...'
+                key='parent'
+                isDirectory
+                parentDirectory
+                pathUrl={url}
+            />
+        ];
 
         /* content.directories.forEach((dir) =>
         directories.push(<Dirent name={dir} isDirectory key={dir} pathUrl={url} />)
@@ -89,8 +92,6 @@ export const Dir = (props) => {
         const files = content.files.map((file) => (
             <Dirent name={file} key={file} pathUrl={url} />
             )); */
-
-        const directories = [];
 
         content.directories.forEach((dir) =>
             directories.push
@@ -153,6 +154,7 @@ export const Dir = (props) => {
                 </Row>
 
                 <Row {...rowProps}> {fillEntries()} </Row>
+
             </Container>
         </>
     )

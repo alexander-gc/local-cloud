@@ -5,15 +5,18 @@ import { saveAs } from 'file-saver';
 
 export const DirCard = ({ isDirectory, parentDirectory, pathUrl, name }) => {
 
-    let icon = <BsFileEarmarkText color='#61AFEF' size='30' />
+    let icon;
 
-    if (isDirectory) icon = <AiFillFolder color='#61AFEF' size='30' />
-
+    isDirectory
+        ? icon = <AiFillFolder color='#61AFEF' size='30' />
+        : icon = <BsFileEarmarkText color='#61AFEF' size='30' />
 
     if (parentDirectory) icon = <BsArrow90DegUp color='#61AFEF' size='30' />
 
     const path = pathUrl ? `${pathUrl}-${name}` : name;
-    const downloadLink = `http://localhost:5000/download/${path}`
+    //const downloadLink = `http://localhost:5000/download/${path}`
+    const downloadLink = `http://192.168.1.69:5000/download/${path}`;
+
 
     return (
         <Card>
@@ -21,12 +24,12 @@ export const DirCard = ({ isDirectory, parentDirectory, pathUrl, name }) => {
                 <Container>
                     <Row>
 
-                        <Col xs={isDirectory ? '' : 8} style={{ padding: 0 }}>
+                        <Col xs={isDirectory ? '' : 8} style={{ padding: 0, color: 'black' }}>
                             <Card.Text
                                 style={{
                                     textOverflow: 'ellipsis',
                                     overflow: 'hidden',
-                                    whiteSpace: 'nowrap'
+                                    whiteSpace: 'nowrap',
                                 }}
                             >
                                 {icon} {name}

@@ -1,10 +1,9 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
-import { Alert } from '../components/Alert'
 import { Loading } from '../components/Loading'
+import { DirContext } from '../context/DirContext'
 import api from '../helpers/api'
-import { apiFetch } from '../helpers/apiFetch'
-
+//import { apiFetch } from '../helpers/apiFetch'
 
 export const MkDirForm = ({ reload, path }) => {
 
@@ -18,17 +17,7 @@ export const MkDirForm = ({ reload, path }) => {
         setName(e.target.value);
     }
 
-    const openAlert = (alert) => {
-
-        if (showAlert) {
-            return (
-                <Alert
-                    alert={alert}
-                    onClose={() => setShowAlert(false)}
-                />
-            );
-        };
-    };
+    const { openAlert } = useContext(DirContext);
 
     const onSubmit = async (e) => {
 
@@ -58,7 +47,7 @@ export const MkDirForm = ({ reload, path }) => {
                 : <></>
             }
 
-            {openAlert(alert)}
+            {openAlert(showAlert, setShowAlert, alert)}
 
             <Form onSubmit={(e) => onSubmit(e)}>
 
