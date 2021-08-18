@@ -12,12 +12,11 @@ export const MkDirForm = ({ reload, path }) => {
     const [showAlert, setShowAlert] = useState(false);
     const [alert, setAlert] = useState('');
 
-    const onChange = (e) => {
-        console.log(e.target.value);
-        setName(e.target.value);
-    }
+    const { openAlert, onChange } = useContext(DirContext);
 
-    const { openAlert } = useContext(DirContext);
+    /* const onChange = (e) => {
+        setName(e.target.value);
+    } */
 
     const onSubmit = async (e) => {
 
@@ -60,7 +59,7 @@ export const MkDirForm = ({ reload, path }) => {
                         className='mb-2'
                         placeholder='Name'
                         value={name}
-                        onChange={(e) => onChange(e)}
+                        onChange={(e) => onChange(e, setName)}
                     />
 
                     <Button size='lg' variant='success' type='submit'>

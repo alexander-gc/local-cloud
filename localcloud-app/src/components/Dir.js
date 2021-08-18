@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Container, Row, Col } from 'react-bootstrap';
 import { AiFillFolderAdd } from 'react-icons/ai';
 import { BsArrow90DegUp } from 'react-icons/bs';
-import { useParams } from 'react-router-dom';
 import { DropFilesForm } from '../forms/DropFilesForm';
 import { FilesForm } from '../forms/FilesForm';
 import { MkDirForm } from '../forms/MkDirForm';
@@ -11,7 +10,7 @@ import { PathForm } from '../forms/PathForm';
 import { Dirent } from './Dirent';
 import { FormModal } from './FormModal';
 import { Loading } from './Loading';
-import api from '../helpers/api';
+import { DirContext } from '../context/DirContext';
 
 export const Dir = (props) => {
 
@@ -20,48 +19,22 @@ export const Dir = (props) => {
 
     const [loading, setLoading] = useState(true);
     const [dir, setDir] = useState({});
+    const [path] = useState(props.match.params.path);
 
-
-    const { path: pathUrl } = useParams();
-    const [url] = useState(pathUrl);
-
-    let path = props.match.params.path;
+    const { loadContent } = useContext(DirContext);
 
     const reload = () => {
         setLoading(true);
-        loadContent();
-    }
-
-    const loadContent = () => {
-
-        if (path === undefined || path === 'undefined') path = "";
-
-        //apiFetch(`content/${path}`).then(data => setDir(data));
-        api.getContent(path).then(data => setDir(data));
-        setLoading(false);
+        loadContent(path, setDir, setLoading);
     }
 
     useEffect(() => {
-        if (path === undefined || path === 'undefined') path = "";
-
-        /* apiFetch(`content/${path}`).then(data => setDir(data));
-        setLoading(false); */
-
-        api.getContent(path).then(data => {
-            setDir(data)
-        });
-        setLoading(false);
-
-    }, [path]);
+        loadContent(path, setDir, setLoading);
+    }, [path, loadContent]);
 
     const fillEntries = () => {
 
-
-        /*        if (loading) {
-                   (<Loading text="Loading..." />)
-               } */
-
-        loading && <Loading text="Loading..." />
+        loading && (<Loading text="Loading..." />)
 
         let content;
 
@@ -81,7 +54,7 @@ export const Dir = (props) => {
                 key='parent'
                 isDirectory
                 parentDirectory
-                pathUrl={url}
+                pathUrl={path}
             />
         ];
 
@@ -99,12 +72,12 @@ export const Dir = (props) => {
                     name={dir}
                     key={dir}
                     isDirectory
-                    pathUrl={url}
+                    pathUrl={path}
                 />)
         );
 
         const files = content.files.map((file) => (
-            <Dirent name={file} key={file} pathUrl={url} />
+            <Dirent name={file} key={file} pathUrl={path} />
         ));
 
         return [...directories, ...files];
@@ -118,14 +91,14 @@ export const Dir = (props) => {
             <Container>
                 <Row {...rowProps}>
                     <Col>
-                        <PathForm path={url} />
+                        <PathForm path={path} />
                     </Col>
                 </Row>
                 <h1 className="text-center">Content</h1>
 
                 <Row {...rowProps}>
                     <Col>
-                        <DropFilesForm uploadTo={url} reload={() => reload()} />
+                        <DropFilesForm uploadTo={path} reload={() => reload()} />
                     </Col>
                 </Row>
 
@@ -136,7 +109,7 @@ export const Dir = (props) => {
                             title="Upload Files"
                             icon={<BsArrow90DegUp {...iconStyle} />}
                         >
-                            <FilesForm uploadTo={url} reload={() => reload()} />
+                            <FilesForm uploadTo={path} reload={() => reload()} />
                         </FormModal>
                     </Col>
                 </Row>
@@ -148,7 +121,7 @@ export const Dir = (props) => {
                             title="Create Directory"
                             icon={<AiFillFolderAdd {...iconStyle} />}
                         >
-                            <MkDirForm path={url} reload={() => reload()} />
+                            <MkDirForm path={path} reload={() => reload()} />
                         </FormModal>
                     </Col>
                 </Row>

@@ -15,11 +15,7 @@ export const FilesForm = ({ uploadTo, reload }) => {
     const [showAlert, setShowAlert] = useState(false)
     const [alert, setAlert] = useState();
 
-    const onChange = (e) => {
-        setFiles(e.target.files);
-    };
-
-    const { openAlert } = useContext(DirContext);
+    const { openAlert, onChange } = useContext(DirContext);
 
     const onSubmit = (e) => {
 
@@ -34,8 +30,6 @@ export const FilesForm = ({ uploadTo, reload }) => {
 
             data.append('file', file);
         }
-
-        //response = await apiFetch(uploadTo || '', data, 'POST');
 
         if (uploadTo === undefined || uploadTo === 'undefined') uploadTo = "";
 
@@ -68,7 +62,7 @@ export const FilesForm = ({ uploadTo, reload }) => {
                     type="file"
                     multiple
                     className='mb-2'
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChange(e, setFiles)}
                 />
 
                 <Button variant="primary" type="submit">

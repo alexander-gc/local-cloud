@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Form, Button } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { DirContext } from '../context/DirContext'
 
 export const PathForm = ({ path }) => {
 
     const [normalPath, setNormalPath] = useState(path)
     const [apiPath, setApiPath] = useState(path)
+
+    const { onChange } = useContext(DirContext);
 
     useEffect(() => {
         if (apiPath === 'undefined' || apiPath === undefined) {
@@ -19,9 +22,9 @@ export const PathForm = ({ path }) => {
         setApiPath(path ? path.replace(/\//g, '-') : '');
     }
 
-    const onChange = (e) => {
-        transformPath(e.target.value);
-    }
+    /*  const onChange = (e) => {
+         transformPath(e.target.value);
+     } */
 
     return (
         <Form>
@@ -31,7 +34,8 @@ export const PathForm = ({ path }) => {
                     type="text"
                     className="mb-2"
                     value={normalPath}
-                    onChange={(e) => onChange(e)}
+                    onChange={(e) => onChange(e, transformPath)}
+                /*onChange={(e) => { transformPath(e.target.value) }*/
                 />
 
                 <Link to={`/content/${apiPath}`}>

@@ -9,7 +9,6 @@ export const Alert = ({ alert, onClose }) => {
         <Aler
             variant={alert.success === true ? 'success' : 'danger'}
             onClose={onClose}
-            dismissible
         >
 
             {alert.msg ? alert.msg : alert}
